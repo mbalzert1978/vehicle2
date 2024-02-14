@@ -4,8 +4,11 @@ from fastapi import FastAPI
 # from fastapi.exceptions import RequestValidationError
 from starlette.middleware.cors import CORSMiddleware
 
-from vehicle.core.configuration.config import get_app_settings
-from vehicle.core.configuration.events import create_start_app_handler, create_stop_app_handler
+from vehicle.external.api.configuration.config import get_app_settings
+from vehicle.external.api.configuration.events import (
+    create_start_app_handler,
+    create_stop_app_handler,
+)
 from vehicle.external.api.endpoints.vehicle.route import vehicle
 
 # from ..api.middleware import error_handler, http422_error_handler

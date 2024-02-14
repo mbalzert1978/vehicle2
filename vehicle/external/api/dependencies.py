@@ -6,8 +6,8 @@ from sqlalchemy import orm as sorm
 
 from vehicle.core.app.queries import vehicle_query as query
 from vehicle.core.app.services.vehicle import create_vehicle as service
-from vehicle.core.configuration.config import get_app_settings
 from vehicle.core.domain.vehicle.vehicle_repository import VehicleRepository
+from vehicle.external.api.configuration.config import get_app_settings
 from vehicle.external.persistence.repositories.vehicle_repo import SQLAVehicleRepository
 
 
