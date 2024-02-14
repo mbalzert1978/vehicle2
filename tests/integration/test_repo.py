@@ -3,7 +3,7 @@ import json
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
-from vehicle.core.app.services.vehicle.create_vehicle import CreateVehicleHandler
+from vehicle.core.domain.vehicle.vehicle import Vehicle
 from vehicle.external.persistence.repositories.vehicle_repo import SQLAVehicleRepository
 
 
@@ -14,21 +14,22 @@ def test_create(session: Session):
     Then: The vehicle should be added to the database and the
         vehicle should be returned with a valid id.
     """
-    to_add = dict(
+    to_add = Vehicle.create(
         name="test_name",
         year_of_manufacture=2024,
-        body={"test": "body"},
+        extras={"test": "body"},
         ready_to_drive=True,
-    )
+    ).unwrap()
 
-    response = CreateVehicleHandler(SQLAVehicleRepository(session)).handle(**to_add)
+    with SQLAVehicleRepository(session) as repo:
+        _id = repo.add(to_add)
 
-    sql = text("SELECT * FROM vehicles WHERE id=:id").bindparams(id=str(response.value))
+    sql = text("SELECT * FROM vehicles WHERE id=:id").bindparams(id=str(_id))
 
-    result = session.execute(sql).one()
+    sql_result = session.execute(sql).one()
 
-    assert result.id == str(response.value)
-    assert result.name == to_add["name"]
-    assert result.year_of_manufacture == to_add["year_of_manufacture"]
-    assert result.body == json.dumps(to_add["body"])
-    assert result.ready_to_drive == to_add["ready_to_drive"]
+    assert sql_result.id == str(_id)
+    assert sql_result.name == to_add.name
+    assert sql_result.year_of_manufacture == to_add.year_of_manufacture
+    assert sql_result.extras == json.dumps(to_add.extras)
+    assert sql_result.ready_to_drive == to_add.ready_to_drive

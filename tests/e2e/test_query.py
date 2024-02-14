@@ -29,14 +29,14 @@ def test_CRUD_happy_path(client: TestClient):
         "year_of_manufacture": 2020,
         "ready_to_drive": False,
     }
-    body = {
+    extras = {
         "color": "test_color",
         "kilometer": 10,
         "price": 10_000,
         "vehicle_type": "test_type",
     }
     # Create a new vehicle
-    create = client.post("/api/vehicles", content=json.dumps(body), params=test_vehicle)
+    create = client.post("/api/vehicles", content=json.dumps(extras), params=test_vehicle)
     assert create.status_code == status.HTTP_200_OK
 
     # Retrieve vehicles
