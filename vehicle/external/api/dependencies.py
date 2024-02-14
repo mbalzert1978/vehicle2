@@ -4,11 +4,9 @@ import fastapi
 from sqlalchemy import create_engine
 from sqlalchemy import orm as sorm
 
-from vehicle.core.app.queries import vehicle_query as query
-from vehicle.core.app.services.vehicle import create_vehicle as service
-from vehicle.core.domain.vehicle.vehicle_repository import VehicleRepository
+from vehicle.core.app.abstraction.handler import Handler
+from vehicle.core.app.abstraction.repository import Repository
 from vehicle.external.api.configuration.config import get_app_settings
-from vehicle.external.persistence.repositories.vehicle_repo import SQLAVehicleRepository
 
 
 def get_session() -> typing.Iterator[sorm.Session]:
@@ -38,24 +36,15 @@ def get_session() -> typing.Iterator[sorm.Session]:
         session.close()
 
 
-def get_vehicle_repository(
-    session: typing.Annotated[sorm.Session, fastapi.Depends(get_session)],
-) -> VehicleRepository:
-    return SQLAVehicleRepository(session)
+def get_handler(handler_type: type[Handler], repo_type: type[Repository]) -> typing.Callable[[Repository], Handler]:
+    def _get_handler(repo: typing.Annotated[Repository, fastapi.Depends(get_repository(repo_type))]) -> Handler:
+        return handler_type(repo)
+
+    return _get_handler
 
 
-def get_vehicle_service(
-    repository: typing.Annotated[VehicleRepository, fastapi.Depends(get_vehicle_repository)],
-) -> service.CreateVehicleHandler:
-    return service.CreateVehicleHandler(repository)
+def get_repository(repo_type: type[Repository]) -> typing.Callable[[sorm.Session], Repository]:
+    def _get_repository(session: typing.Annotated[sorm.Session, fastapi.Depends(get_session)]) -> Repository:
+        return repo_type(session)
 
-
-def get_vehicle_query(
-    session: typing.Annotated[sorm.Session, fastapi.Depends(get_session)],
-) -> query.VehicleQuery:
-    return query.VehicleQuery(session)
-
-
-VehicleService = typing.Annotated[service.CreateVehicleHandler, fastapi.Depends(get_vehicle_service)]
-
-VehicleQuery = typing.Annotated[query.VehicleQuery, fastapi.Depends(get_vehicle_query)]
+    return _get_repository

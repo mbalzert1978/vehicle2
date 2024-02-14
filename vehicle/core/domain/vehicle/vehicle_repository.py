@@ -1,11 +1,16 @@
 import typing
 import uuid
 
+from sqlalchemy.orm import Session
+
 from vehicle.core.domain.shared.value_object import ValueObject
 from vehicle.core.domain.vehicle.vehicle import Vehicle
 
 
 class VehicleRepository(typing.Protocol):
+    def __init__(self, session: Session) -> None:
+        ...
+
     def __enter__(self) -> typing.Self:
         ...
 

@@ -13,7 +13,7 @@ class Vehicle(Entity):
     id: UuidID
     name: str
     year_of_manufacture: int
-    body: dict[str, typing.Any]
+    extras: dict[str, typing.Any]
     ready_to_drive: bool
 
     def dump(self) -> dict[str, typing.Any]:
@@ -24,10 +24,10 @@ class Vehicle(Entity):
 
     @classmethod
     def create(
-        cls, name: str, year_of_manufacture: int, body: dict[str, typing.Any], *, ready_to_drive: bool
+        cls, name: str, year_of_manufacture: int, extras: dict[str, typing.Any], *, ready_to_drive: bool
     ) -> Result[typing.Self, Error]:
         match result := UuidID.create():
             case Ok(id):
-                return Ok(cls(id, name, year_of_manufacture, body, ready_to_drive))
+                return Ok(cls(id, name, year_of_manufacture, extras, ready_to_drive))
             case Err(_):
                 return result
