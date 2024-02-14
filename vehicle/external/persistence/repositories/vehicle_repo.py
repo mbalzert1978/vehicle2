@@ -1,4 +1,5 @@
 import typing
+import uuid
 
 from sqlalchemy.orm import Session
 
@@ -14,13 +15,13 @@ class SQLAVehicleRepository:
     def __enter__(self) -> typing.Self:
         return self
 
-    def __exit__(self, exc_type, exc_val, exc_tb) -> None:
+    def __exit__(self, exc_type, exc_val, _) -> None:
         if exc_type is not None:
             self._session.rollback()
             raise exc_type(exc_val)
         self._session.commit()
 
-    def add(self, vehicle: Vehicle) -> ValueObject:
+    def add(self, vehicle: Vehicle) -> ValueObject[uuid.UUID]:
         to_add = VehicleInDB(**vehicle.dump())
         self._session.add(to_add)
         return vehicle.id

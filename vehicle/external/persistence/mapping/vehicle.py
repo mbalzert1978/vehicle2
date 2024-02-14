@@ -1,5 +1,6 @@
 import typing
 
+from fastapi.encoders import jsonable_encoder
 from sqlalchemy import JSON, Boolean, Integer, String
 from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
 
@@ -17,4 +18,4 @@ class VehicleInDB(Base):
     ready_to_drive: Mapped[bool] = mapped_column(Boolean())
 
     def dump(self) -> dict[str, typing.Any]:
-        return self.__dict__
+        return jsonable_encoder(self)

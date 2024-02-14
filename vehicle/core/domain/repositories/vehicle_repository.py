@@ -1,4 +1,5 @@
 import typing
+import uuid
 
 from ..entities.vehicle import Vehicle
 from ..valueobjects.base import ValueObject
@@ -11,7 +12,7 @@ class VehicleRepository(typing.Protocol):
     def __exit__(self, exc_type, exc_val, exc_tb) -> None:
         ...
 
-    def add(self, vehicle: Vehicle) -> ValueObject:
+    def add(self, vehicle: Vehicle) -> ValueObject[uuid.UUID]:
         ...
 
     def get_by_id(self, vehicle_id: ValueObject) -> Vehicle | None:
