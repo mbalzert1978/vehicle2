@@ -20,7 +20,7 @@ def test_create(session: Session):
         body={"test": "body"},
         ready_to_drive=True,
     )
-    
+
     response = VehicleService(SQLAVehicleRepository(session)).create(**to_add)
 
     sql = text("SELECT * FROM vehicles WHERE id=:id").bindparams(id=str(response.value))

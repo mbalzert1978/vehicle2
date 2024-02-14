@@ -33,9 +33,3 @@ class SQLAVehicleRepository:
     def update(self, vehicle: Vehicle) -> None:
         to_update = VehicleInDB(**vehicle.dump())
         self._session.merge(to_update)
-
-    def list(self) -> list[Vehicle]:
-        return [
-            Vehicle(**vehicle.dump())
-            for vehicle in self._session.query(VehicleInDB).all()
-        ]

@@ -4,6 +4,7 @@ import fastapi
 from sqlalchemy import create_engine
 from sqlalchemy import orm as sorm
 
+from ...core.app.queries import vehicle_query as query
 from ...core.app.services import vehicle_service as service
 from ...core.configuration.config import get_app_settings
 from ...core.domain.repositories.vehicle_repository import VehicleRepository
@@ -51,6 +52,14 @@ def get_vehicle_service(
     return service.VehicleService(repository)
 
 
+def get_vehicle_query(
+    session: typing.Annotated[sorm.Session, fastapi.Depends(get_session)],
+) -> query.VehicleQuery:
+    return query.VehicleQuery(session)
+
+
 VehicleService = typing.Annotated[
     service.VehicleService, fastapi.Depends(get_vehicle_service)
 ]
+
+VehicleQuery = typing.Annotated[query.VehicleQuery, fastapi.Depends(get_vehicle_query)]

@@ -28,6 +28,3 @@ class VehicleService:
                 )
             )
         return id
-
-    def list(self) -> list[Vehicle]:
-        return self._vehicle_repository.list()

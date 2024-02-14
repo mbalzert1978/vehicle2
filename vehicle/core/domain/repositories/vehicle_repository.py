@@ -19,6 +19,3 @@ class VehicleRepository(typing.Protocol):
 
     def update(self, vehicle: Vehicle) -> None:
         ...
-
-    def list(self) -> list[Vehicle]:
-        ...

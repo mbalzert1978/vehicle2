@@ -9,7 +9,7 @@ from ...core.configuration.events import (
     create_start_app_handler,
     create_stop_app_handler,
 )
-from .endpoints.vehicle.route import router
+from .endpoints.vehicle.route import vehicle
 
 # from ..api.middleware import error_handler, http422_error_handler
 
@@ -41,7 +41,7 @@ def get_application() -> FastAPI:
     # application.add_exception_handler(Error, error_handler)
     # application.add_exception_handler(RequestValidationError, http422_error_handler)
     # TODO: create Error handler for all exceptions
-    application.include_router(router, prefix=settings.api_prefix)
+    application.include_router(vehicle, prefix=settings.api_prefix)
 
     return application
 
