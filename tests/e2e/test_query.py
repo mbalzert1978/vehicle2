@@ -7,7 +7,7 @@ from fastapi.testclient import TestClient
 from httpx import Response
 from pydantic import ValidationError
 
-from vehicle.core.domain.entities.vehicle import Vehicle
+from vehicle.core.domain.vehicle.vehicle import Vehicle
 
 
 def _structural_correctnes(data: Response, model: type[typing.Any]):

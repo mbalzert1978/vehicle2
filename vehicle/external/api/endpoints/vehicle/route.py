@@ -12,9 +12,7 @@ vehicle = fastapi.APIRouter(prefix="/vehicles")
 
 @vehicle.get("/", name="list:vehicles")
 def list_vehicles(query: VehicleQuery) -> DataResponse[VehicleResponse]:
-    return DataResponse(
-        data=[VehicleResponse.model_validate(r) for r in query.list()]
-    )
+    return DataResponse(data=[VehicleResponse.model_validate(r) for r in query.list()])
 
 
 @vehicle.post("/", name="create:vehicle")
@@ -28,7 +26,7 @@ def create_vehicle(
     return DataResponse(
         data=[
             str(
-                service.create(
+                service.handle(
                     name=name,
                     year_of_manufacture=year_of_manufacture,
                     body=body,

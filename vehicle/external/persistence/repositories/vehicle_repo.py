@@ -3,9 +3,9 @@ import uuid
 
 from sqlalchemy.orm import Session
 
-from ....core.domain.entities.vehicle import Vehicle
-from ....core.domain.valueobjects.base import ValueObject
-from ..mapping.vehicle import VehicleInDB
+from vehicle.core.domain.shared.value_object import ValueObject
+from vehicle.core.domain.vehicle.vehicle import Vehicle
+from vehicle.external.persistence.mapping.vehicle import VehicleInDB
 
 
 class SQLAVehicleRepository:

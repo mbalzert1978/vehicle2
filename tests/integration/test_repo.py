@@ -3,7 +3,7 @@ import json
 from sqlalchemy import text
 from sqlalchemy.orm import Session
 
-from vehicle.core.app.services.vehicle_service import VehicleService
+from vehicle.core.app.services.vehicle.create_vehicle import CreateVehicleHandler
 from vehicle.external.persistence.repositories.vehicle_repo import SQLAVehicleRepository
 
 
@@ -21,7 +21,7 @@ def test_create(session: Session):
         ready_to_drive=True,
     )
 
-    response = VehicleService(SQLAVehicleRepository(session)).create(**to_add)
+    response = CreateVehicleHandler(SQLAVehicleRepository(session)).handle(**to_add)
 
     sql = text("SELECT * FROM vehicles WHERE id=:id").bindparams(id=str(response.value))
 

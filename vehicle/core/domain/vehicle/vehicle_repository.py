@@ -1,8 +1,8 @@
 import typing
 import uuid
 
-from ..entities.vehicle import Vehicle
-from ..valueobjects.base import ValueObject
+from vehicle.core.domain.shared.value_object import ValueObject
+from vehicle.core.domain.vehicle.vehicle import Vehicle
 
 
 class VehicleRepository(typing.Protocol):
