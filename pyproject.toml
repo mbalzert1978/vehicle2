@@ -12,7 +12,7 @@ uvicorn = "^0.27.1"
 loguru = "^0.7.2"
 pydantic-settings = "^2.1.0"
 result = "^0.16.0"
-pydantic = {extras = ["email"], version = "^2.6.1"}
+pydantic = { extras = ["email"], version = "^2.6.1" }
 sqlalchemy = "^2.0.27"
 httpx = "^0.26.0"
 
@@ -26,3 +26,59 @@ mypy = "^1.8.0"
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.ruff]
+line-length = 119
+lint.select = [
+    "A",
+    "B",
+    "F",
+    "G",
+    "I",
+    "N",
+    "Q",
+    "S",
+    "W",
+    "ANN",
+    "ARG",
+    "BLE",
+    "COM",
+    "DJ",
+    "DTZ",
+    "EM",
+    "ERA",
+    "EXE",
+    "FBT",
+    "ICN",
+    "INP",
+    "ISC",
+    "NPY",
+    "PD",
+    "PGH",
+    "PIE",
+    "PL",
+    "PT",
+    "PTH",
+    "PYI",
+    "RET",
+    "RSE",
+    "RUF",
+    "SIM",
+    "SLF",
+    "TCH",
+    "TID",
+    "TRY",
+    "UP",
+    "YTT",
+]
+lint.ignore = [
+    "ANN001",
+    "ANN101",
+    "ANN102",
+    "D211",
+    "D212",
+    "D107",
+    "Q000",
+    "COM812",
+    "ISC001",
+]
