@@ -1,15 +1,14 @@
 import typing
 
 import fastapi
-from sqlalchemy import create_engine
-from sqlalchemy import orm as sorm
+from sqlalchemy import create_engine, orm
 
 from vehicle.core.app.abstraction.handler import Handler
 from vehicle.core.app.abstraction.repository import Repository
 from vehicle.external.api.configuration.config import get_app_settings
 
 
-def get_session() -> typing.Iterator[sorm.Session]:
+def get_session() -> typing.Iterator[orm.Session]:
     """
     Yield an SQLAlchemy Session object.
 
@@ -20,7 +19,7 @@ def get_session() -> typing.Iterator[sorm.Session]:
     An SQLAlchemy Session object.
     """
     settings = get_app_settings()
-    Session = sorm.sessionmaker(
+    Session = orm.sessionmaker(
         autocommit=False,
         autoflush=False,
         bind=create_engine(
@@ -43,8 +42,8 @@ def get_handler(handler_type: type[Handler], repo_type: type[Repository]) -> typ
     return _get_handler
 
 
-def get_repository(repo_type: type[Repository]) -> typing.Callable[[sorm.Session], Repository]:
-    def _get_repository(session: typing.Annotated[sorm.Session, fastapi.Depends(get_session)]) -> Repository:
+def get_repository(repo_type: type[Repository]) -> typing.Callable[[orm.Session], Repository]:
+    def _get_repository(session: typing.Annotated[orm.Session, fastapi.Depends(get_session)]) -> Repository:
         return repo_type(session)
 
     return _get_repository
