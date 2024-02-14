@@ -17,11 +17,10 @@ class VehicleService:
         body: dict[str, typing.Any],
         ready_to_drive: bool,
     ) -> ValueObject:
-        id = UuidID.create()
         with self._vehicle_repository as repo:
             repo.add(
                 Vehicle(
-                    id=id,
+                    id=(id := UuidID.create()),
                     name=name,
                     year_of_manufacture=year_of_manufacture,
                     body=body,
