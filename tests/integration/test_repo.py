@@ -19,7 +19,7 @@ def test_create(session: Session):
         year_of_manufacture=2024,
         extras={"test": "body"},
         ready_to_drive=True,
-    ).unwrap()
+    )
 
     with SQLAVehicleRepository(session) as repo:
         _id = repo.add(to_add)

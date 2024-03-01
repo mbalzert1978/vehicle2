@@ -1,15 +1,14 @@
 import typing
 import uuid
 
-from sqlalchemy.orm import Session
-
+from vehicle.core.app.abstraction.repository import SessionLike
 from vehicle.core.domain.shared.value_object import ValueObject
 from vehicle.core.domain.vehicle.vehicle import Vehicle
 from vehicle.external.persistence.mapping.vehicle import VehicleInDB
 
 
 class SQLAVehicleRepository:
-    def __init__(self, session: Session) -> None:
+    def __init__(self, session: SessionLike) -> None:
         self._session = session
 
     def __enter__(self) -> typing.Self:

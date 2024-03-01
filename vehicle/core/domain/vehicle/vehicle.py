@@ -2,10 +2,7 @@ import dataclasses
 import typing
 
 from vehicle.core.domain.shared.entity import Entity
-from vehicle.core.domain.shared.error import Error
-from vehicle.core.domain.shared.result import Err, Ok, Result
-
-from .uuid_id import UuidID
+from vehicle.core.domain.vehicle.uuid_id import UuidID
 
 
 @dataclasses.dataclass
@@ -24,10 +21,11 @@ class Vehicle(Entity):
 
     @classmethod
     def create(
-        cls, name: str, year_of_manufacture: int, extras: dict[str, typing.Any], *, ready_to_drive: bool
-    ) -> Result[typing.Self, Error]:
-        match result := UuidID.create():
-            case Ok(id):
-                return Ok(cls(id, name, year_of_manufacture, extras, ready_to_drive))
-            case Err(_):
-                return result
+        cls,
+        name: str,
+        year_of_manufacture: int,
+        extras: dict[str, typing.Any],
+        *,
+        ready_to_drive: bool,
+    ) -> typing.Self:
+        return cls(UuidID.create(), name, year_of_manufacture, extras, ready_to_drive)

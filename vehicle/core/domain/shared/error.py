@@ -12,3 +12,7 @@ class Error(Exception):
     @classmethod
     def none(cls) -> typing.Self:
         return cls(code=500, description="Internal Server Error")
+
+    @classmethod
+    def from_exception(cls, exception: Exception) -> typing.Self:
+        return cls(code=500, description=str(exception))

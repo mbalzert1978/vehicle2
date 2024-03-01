@@ -1,12 +1,11 @@
 import typing
 from collections.abc import Sequence
 
-from sqlalchemy import Row, text
+from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
-from sqlalchemy.orm import Session
 
+from vehicle.core.app.abstraction.repository import RowLike, SessionLike
 from vehicle.core.domain.shared.error import Error
-from vehicle.core.domain.shared.result import Err, Ok, Result
 
 
 class SQLAQueryRepository:
@@ -15,11 +14,11 @@ class SQLAQueryRepository:
         FROM vehicles;
         """
 
-    def __init__(self, session: Session) -> None:
+    def __init__(self, session: SessionLike) -> None:
         self._session = session
 
-    def get(self) -> Result[Sequence[Row[typing.Any]], Error]:
+    def get(self) -> Sequence[RowLike[typing.Any]]:
         try:
-            return Ok(self._session.execute(text(self.SELECT)).fetchall())
+            return self._session.execute(text(self.SELECT)).fetchall()
         except SQLAlchemyError as exc:
-            return Err(Error(500, str(exc)))
+            raise Error.from_exception(exc) from exc

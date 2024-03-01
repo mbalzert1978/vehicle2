@@ -30,7 +30,7 @@ class AppSettings(BaseAppSettings):
 
     jwt_token_expires_in_days: int = 1
 
-    allowed_hosts: list[str] = ["*"]
+    allowed_hosts: typing.ClassVar[list[str]] = ["*"]
 
     logging_level: int = logging.INFO
     loggers: tuple[str, str] = ("uvicorn.asgi", "uvicorn.access")

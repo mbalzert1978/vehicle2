@@ -8,7 +8,10 @@ TV = typing.TypeVar("TV")
 class ValueObject(typing.Protocol[TV]):
     value: TV
 
+    def __hash__(self) -> int:
+        if isinstance(self.value, typing.Iterable):
+            return hash(hash(v) for v in self.value)
+        return hash(self.value)
+
     def __eq__(self, __value: object) -> bool:
-        if isinstance(__value, type(self)):
-            return self.value == __value.value
-        return False
+        return isinstance(__value, self.__class__) and self.value == __value.value

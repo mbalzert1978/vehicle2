@@ -2,10 +2,8 @@ import dataclasses
 import typing
 import uuid
 
-from vehicle.core.domain.shared.result import Err, Ok, Result
 from vehicle.core.domain.shared.value_object import ValueObject
-
-from .uuid_error import UUIDError
+from vehicle.core.domain.vehicle.uuid_error import UUIDError
 
 
 @dataclasses.dataclass(frozen=True)
@@ -16,9 +14,9 @@ class UuidID(ValueObject[uuid.UUID]):
         return str(self.value)
 
     @classmethod
-    def create(cls) -> Result[typing.Self, UUIDError]:
+    def create(cls) -> typing.Self:
         try:
             _uuid = uuid.uuid4()
-        except Exception as exc:
-            return Err(UUIDError(500, str(exc)))
-        return Ok(cls(_uuid))
+        except ValueError as exc:
+            raise UUIDError.from_exception(exc) from exc
+        return cls(_uuid)
